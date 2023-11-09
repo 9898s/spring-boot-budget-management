@@ -5,6 +5,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import com.example.budget.category.repository.CategoryRepository;
+import com.example.budget.member.repository.MemberRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -12,20 +13,24 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class DummyCategoryInitTest extends DummyCategoryInit {
+class DummyDataInitTest {
 
   @InjectMocks
-  private DummyCategoryInit dummyCategoryInit;
+  private DummyDataInit dummyCategoryInit;
 
   @Mock
   private CategoryRepository categoryRepository;
 
+  @Mock
+  private MemberRepository memberRepository;
+
   @Test
-  void 카테고리_실행_횟수_test() throws Exception {
+  void 초기_데이터_실행_횟수_test() throws Exception {
     // when
-    dummyCategoryInit.init(categoryRepository).run();
+    dummyCategoryInit.init(categoryRepository, memberRepository).run();
 
     // then
     verify(categoryRepository, times(3)).save(any());
+    verify(memberRepository, times(3)).save(any());
   }
 }
