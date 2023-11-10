@@ -40,4 +40,16 @@ public class BudgetRequestDto {
     private Long amount;
     private Long categoryId;
   }
+
+  @Setter
+  @Getter
+  public static class BudgetRecommendRequestDto {
+
+    @Positive(message = "양수 값만 입력해주시길 바랍니다.")
+    private Long amount;
+
+    // TODO: 2023/11/11 - 시큐리티 적용하면 지우기
+    @NotNull(message = "회원 번호를 입력해주시길 바랍니다.")
+    private Long memberId;
+  }
 }

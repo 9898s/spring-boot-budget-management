@@ -1,6 +1,7 @@
 package com.example.budget.budget.dto;
 
 import com.example.budget.budget.entity.Budget;
+import java.util.Map;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -31,6 +32,17 @@ public class BudgetResponseDto {
     public BudgetEditResponseDto(Budget budget) {
       this.amount = budget.getAmount();
       this.categoryName = budget.getCategory().getName();
+    }
+  }
+
+  @Setter
+  @Getter
+  public static class BudgetRecommendResponseDto {
+
+    private Map<String, Long> categoryRecommend;
+
+    public BudgetRecommendResponseDto(Map<String, Long> categoryAllocations) {
+      this.categoryRecommend = categoryAllocations;
     }
   }
 }

@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -43,6 +44,17 @@ public class BudgetController {
 
     return new ResponseEntity<>(
         new ResponseDto<>(true, "예산 수정", responseDto), HttpStatus.OK
+    );
+  }
+
+  @GetMapping("/recommend")
+  public ResponseEntity<?> recommendBudget(
+      @RequestBody @Valid BudgetRequestDto.BudgetRecommendRequestDto requestDto,
+      BindingResult bindingResult) {
+    BudgetResponseDto.BudgetRecommendResponseDto responseDto =
+        budgetService.recommendBudget(requestDto);
+    return new ResponseEntity<>(
+        new ResponseDto<>(true, "예산 추천", responseDto), HttpStatus.OK
     );
   }
 }
