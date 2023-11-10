@@ -1,6 +1,7 @@
 package com.example.budget.budget.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
@@ -11,6 +12,7 @@ import com.example.budget.budget.entity.Budget;
 import com.example.budget.budget.repository.BudgetRepository;
 import com.example.budget.category.entity.Category;
 import com.example.budget.category.service.CategoryService;
+import com.example.budget.global.handler.exception.CustomApiException;
 import com.example.budget.member.entity.Member;
 import com.example.budget.member.service.MemberService;
 import org.junit.jupiter.api.Test;
@@ -79,5 +81,41 @@ class BudgetServiceTest {
     assertEquals(1000L, responseDto.getAmount());
     assertEquals(1L, responseDto.getMemberId());
     assertEquals("주거", responseDto.getCategoryName());
+  }
+
+  @Test
+  void 이미_존재하는_예산설정_test() throws Exception {
+    // given
+    Member hong = Member.builder()
+        .id(1L)
+        .account("hong")
+        .password("1234")
+        .build();
+
+    Category home = Category.builder()
+        .id(1L)
+        .name("주거")
+        .build();
+
+    BudgetSetRequestDto requestDto = new BudgetSetRequestDto();
+    requestDto.setAmount(1000L);
+    requestDto.setMemberId(1L);
+    requestDto.setCategoryId(1L);
+
+    // stub 1
+    when(memberService.getMemberEntity(anyLong())).thenReturn(hong);
+
+    // stub 2
+    when(categoryService.getCategoryId(anyLong())).thenReturn(home);
+
+    // stub 3
+    when(budgetRepository.existsByMemberAndCategory(any(), any())).thenReturn(true);
+
+    // when & then
+    CustomApiException exception = assertThrows(CustomApiException.class, () -> {
+      budgetService.setBudget(requestDto);
+    });
+
+    assertEquals("이미 존재하는 데이터입니다.", exception.getMessage());
   }
 }
