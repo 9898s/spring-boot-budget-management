@@ -23,7 +23,11 @@ public class CustomValidationAdvice {
   public void putMapping() {
   }
 
-  @Around("postMapping() || putMapping()")
+  @Pointcut("@annotation(org.springframework.web.bind.annotation.GetMapping)")
+  public void getMapping() {
+  }
+
+  @Around("postMapping() || putMapping() || getMapping()")
   public Object validationAdvice(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
     Object[] args = proceedingJoinPoint.getArgs();
     for (Object arg : args) {
