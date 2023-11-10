@@ -32,4 +32,12 @@ public class BudgetRequestDto {
           .build();
     }
   }
+
+  @Setter
+  @Getter
+  public static class BudgetEditRequestDto {
+
+    private Long amount;
+    private Long categoryId;
+  }
 }

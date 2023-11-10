@@ -13,11 +13,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicUpdate;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Getter
+@DynamicUpdate
 @Entity
 public class Budget {
 
@@ -34,4 +36,14 @@ public class Budget {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "category")
   private Category category;
+
+  public void update(Long amount, Category category) {
+    if (amount != null) {
+      this.amount = amount;
+    }
+
+    if (category != null) {
+      this.category = category;
+    }
+  }
 }

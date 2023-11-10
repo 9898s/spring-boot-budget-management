@@ -20,4 +20,17 @@ public class BudgetResponseDto {
       this.categoryName = budget.getCategory().getName();
     }
   }
+
+  @Setter
+  @Getter
+  public static class BudgetEditResponseDto {
+
+    private Long amount;
+    private String categoryName;
+
+    public BudgetEditResponseDto(Budget budget) {
+      this.amount = budget.getAmount();
+      this.categoryName = budget.getCategory().getName();
+    }
+  }
 }

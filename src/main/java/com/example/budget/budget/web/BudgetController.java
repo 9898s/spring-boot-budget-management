@@ -9,7 +9,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,5 +31,18 @@ public class BudgetController {
 
     return new ResponseEntity<>(
         new ResponseDto<>(true, "예산 설정", responseDto), HttpStatus.CREATED);
+  }
+
+  @PutMapping("/{budgetId}")
+  public ResponseEntity<?> editBudget(
+      @PathVariable Long budgetId,
+      @RequestBody @Valid BudgetRequestDto.BudgetEditRequestDto requestDto,
+      BindingResult bindingResult) {
+    BudgetResponseDto.BudgetEditResponseDto responseDto =
+        budgetService.editBudget(budgetId, requestDto);
+
+    return new ResponseEntity<>(
+        new ResponseDto<>(true, "예산 수정", responseDto), HttpStatus.OK
+    );
   }
 }
